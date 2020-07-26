@@ -28,19 +28,24 @@ class App extends React.Component {
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot((snapShot) => {
-          this.setState(
-            {
-              current_user: {
-                id: snapShot.id,
-                ...snapShot.data(),
-              },
+          this.setState({
+            current_user: {
+              id: snapShot.id,
+              ...snapShot.data(),
             },
-            () => console.log(this.state)
-          );
+          });
         });
       }
     });
   }
+
+  handleSignOut = () => {
+    auth.signOut();
+
+    this.setState({
+      current_user: '',
+    });
+  };
 
   componentWillUnmount() {
     this.unSubscribeFromAuth();
@@ -49,7 +54,10 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Header currentUser={this.state.current_user} />
+        <Header
+          currentUser={this.state.current_user}
+          handleSignOut={this.handleSignOut}
+        />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
