@@ -29,3 +29,8 @@ export const selectCartTotal = createSelector([selectCartItems], (cartItems) =>
     0
   )
 );
+
+export const selectClearCartItems = createSelector(
+  [selectCart],
+  (cart) => cart.cartItems
+);
